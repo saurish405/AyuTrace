@@ -1,25 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useMemo } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { Login } from './pages/Login';
+import { Dashboard } from './pages/Dashboard';
+import { RoleSelection } from './pages/RoleSelection';
+import ProcessBatch from './pages/ProcessBatch';
+import LabTechnicianDashboard from './pages/LabTechnicianDashboard';
+import ManufacturerDashboard from './pages/ManufacturerDashboard';
+import { lightTheme, darkTheme } from './theme';
+
+// Simple wrapper component (no authentication check)
+const AppContainer = ({ children }: { children: React.ReactNode }) => (
+  <>{children}</>
+);
+
+const AppRoutes = () => (
+  <Routes>
+    {/* Public routes */}
+    <Route path="/login" element={<Login />} />
+    
+    {/* Main routes */}
+    <Route path="/dashboard" element={<Dashboard />} />
+    <Route path="/role-selection" element={<RoleSelection />} />
+    <Route path="/lab-technician" element={<LabTechnicianDashboard />} />
+    <Route path="/manufacturer" element={<ManufacturerDashboard />} />
+    <Route path="/process-batch/:id" element={<ProcessBatch />} />
+    
+    {/* Redirect root to role selection */}
+    <Route path="/" element={<Navigate to="/role-selection" replace />} />
+    
+    {/* Catch-all route */}
+    <Route path="*" element={<Navigate to="/role-selection" replace />} />
+  </Routes>
+);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <ThemeProvider theme={lightTheme}>
+        <CssBaseline />
+        <Router>
+          <AppContainer>
+            <AppRoutes />
+          </AppContainer>
+        </Router>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 
