@@ -44,7 +44,5 @@ This project simulates how **blockchain transparency** can bring **trust, sustai
 - **Data Storage:** JSON file ledger (simulating distributed ledger)  
 - **UUID:** Batch ID generation  
 
----
 
-## 📂 Project Structure
 
