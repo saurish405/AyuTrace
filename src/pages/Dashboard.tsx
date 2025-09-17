@@ -153,41 +153,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 // Mock data for demonstration - using only BatchEntry type properties
-const mockBatches: BatchEntry[] = [
-  {
-    id: '1',
-    batchNumber: 'BATCH-2023-001',
-    herbName: 'Ashwagandha',
-    scientificName: 'Withania somnifera',
-    dateReceived: '2023-09-12',
-    weightReceived: 150,
-    weightAfterProcessing: 140,
-    createdAt: '2023-09-12T10:30:00Z',
-    updatedAt: '2023-09-12T10:30:00Z'
-  },
-  {
-    id: '2',
-    batchNumber: 'BATCH-2023-002',
-    herbName: 'Turmeric',
-    scientificName: 'Curcuma longa',
-    dateReceived: '2023-09-11',
-    weightReceived: 200,
-    weightAfterProcessing: 190,
-    createdAt: '2023-09-11T14:15:00Z',
-    updatedAt: '2023-09-11T15:45:00Z'
-  },
-  {
-    id: '3',
-    batchNumber: 'BATCH-2023-003',
-    herbName: 'Tulsi',
-    scientificName: 'Ocimum tenuiflorum',
-    dateReceived: '2023-09-10',
-    weightReceived: 120,
-    weightAfterProcessing: 115,
-    createdAt: '2023-09-10T09:20:00Z',
-    updatedAt: '2023-09-10T09:20:00Z'
-  }
-];
 
 // Profile type
 type Profile = {
@@ -224,38 +189,26 @@ export const Dashboard = () => {
     const loadBatches = () => {
       try {
         const storedBatches = getBatches();
-        // Ensure we have some initial data if none exists
-        if (storedBatches.length === 0) {
-          // Initialize with mock data if no data exists
-          const newBatches = mockBatches.map(batch => ({
-            ...batch,
-            weightReceived: Number(batch.weightReceived),
-            weightAfterProcessing: Number(batch.weightAfterProcessing)
-          }));
-          newBatches.forEach(batch => addBatch(batch));
-          setBatches(newBatches);
-        } else {
-          setBatches(storedBatches);
-        }
+        setBatches(storedBatches);
       } catch (error) {
         console.error('Error loading batches:', error);
       } finally {
         setIsLoading(false);
       }
     };
-
+  
     loadBatches();
-    
-    // Set up storage event listener to sync across tabs
+  
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'ayurvedic_herb_batches') {
         loadBatches();
       }
     };
-
+  
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
+  
 
   const handleAddBatch = (newBatch: NewBatchEntry) => {
     try {

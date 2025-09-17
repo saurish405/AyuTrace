@@ -240,7 +240,7 @@ export const Login = () => {
         
         <Box sx={{ mt: 4, textAlign: 'center' }}>
           <Typography variant="body2" color="text.secondary">
-            {new Date().getFullYear()} HerbTrack Pro. All rights reserved.
+            {new Date().getFullYear()} Qryptix All rights reserved.
           </Typography>
         </Box>
       </Container>
